@@ -39,10 +39,10 @@ setup(
     install_requires=requirements,
     license="BSD",
     zip_safe=False,
-    keywords='tmuxipy',
+    keywords='tmux',
     entry_points={
         'console_scripts': [
-            'pytmux = pytmux.main:main',
+            'tmuxipy = pytmux.main:main',
         ]
     },
     classifiers=[
