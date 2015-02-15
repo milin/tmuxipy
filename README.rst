@@ -1,21 +1,21 @@
 ===============================
-pytmux
+tmuxipy
 ===============================
 
-.. image:: https://badge.fury.io/py/pytmux.png
-    :target: http://badge.fury.io/py/pytmux
+.. image:: https://badge.fury.io/py/tmuxipy.png
+    :target: http://badge.fury.io/py/tmuxipy
 
 .. image:: https://travis-ci.org/milin/pytmux.png?branch=master
-        :target: https://travis-ci.org/milin/pytmux
+        :target: https://travis-ci.org/milin/tmuxipy
 
 .. image:: https://pypip.in/d/pytmux/badge.png
-        :target: https://pypi.python.org/pypi/pytmux
+        :target: https://pypi.python.org/pypi/tmuxipy
 
 
 Manage Tmux sessions legitly
 
 * Free software: BSD license
-* Documentation: https://pytmux.readthedocs.org.
+* Documentation: https://tmuxipy.readthedocs.org.
 
 Features
 --------
