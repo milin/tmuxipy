@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import os
 
 
 try:
@@ -8,10 +7,9 @@ try:
 except ImportError:
     from distutils.core import setup
 
-def read(fname):
-    return (open(os.path.join(os.path.dirname(__file__), fname), 'rb')
-            .read().decode('utf-8'))
-
+with open('requirements.txt') as f:
+    install_reqs = [line for line in f.read().split('\n') if line]
+    tests_reqs = []
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -19,9 +17,7 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read().replace('.. :changelog:', '')
 
-requirements = read('requirements.txt').splitlines() + [
-    'setuptools',
-]
+requirements = install_reqs
 
 test_requirements = [
     # TODO: put package test requirements here
@@ -29,7 +25,7 @@ test_requirements = [
 
 setup(
     name='tmuxipy',
-    version='0.1.1',
+    version='0.1.2',
     description="Manage Tmux sessions legitly",
     long_description=readme + '\n\n' + history,
     author="Milind Shakya",
