@@ -13,7 +13,7 @@ parser = argparse.ArgumentParser(description=(
 parser.add_argument(
     '-c', '--config',
     dest='config',
-    default='-',
+    default=None,
     required=False,
     help='Path to the configuration file'
 )
@@ -22,9 +22,10 @@ parser.add_argument(
 def main():
     """Main Application"""
     args = parser.parse_args()
-
-    with open(args.config) as myfile:
-        config = json.loads(''.join(myfile))
+    config=None
+    if args.config:
+        with open(args.config) as myfile:
+            config = json.loads(''.join(myfile))
 
     tmux_builder = TmuxSessionBuilder(config=config)
     tmux_builder.build()

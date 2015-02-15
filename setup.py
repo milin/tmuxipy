@@ -23,18 +23,18 @@ test_requirements = [
 ]
 
 setup(
-    name='pytmux',
+    name='tmuxipy',
     version='0.1.0',
     description="Manage Tmux sessions legitly",
     long_description=readme + '\n\n' + history,
     author="Milind Shakya",
     author_email='sh.milind@gmail.com',
-    url='https://github.com/milin/pytmux',
+    url='https://github.com/milin/tmuxipy',
     packages=[
-        'pytmux',
+        'tmuxipy',
     ],
-    package_dir={'pytmux':
-                 'pytmux'},
+    package_dir={'tmuxipy':
+                 'tmuxipy'},
     include_package_data=True,
     install_requires=requirements,
     license="BSD",
@@ -42,7 +42,7 @@ setup(
     keywords='tmux',
     entry_points={
         'console_scripts': [
-            'tmuxipy = pytmux.main:main',
+            'tmuxipy = tmuxipy.main:main',
         ]
     },
     classifiers=[
