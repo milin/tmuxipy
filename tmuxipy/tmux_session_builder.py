@@ -2,6 +2,34 @@ from fabric.api import local
 import kaptan
 
 
+
+class Session(object):
+
+    def __init__(self, name, config, tmux):
+        self.name = name
+        self.config = config
+        self.tmux = tmux
+        self.windows = {}
+
+    def create(self):
+        _execute("{} {} {}".format(self.tmux, 'new-session -d -s', self.name))
+        _execute("{} {} '{}'".format(self.tmux, 'rename-window', self.config.get('windows.0.name')))
+        for win_num, window in enumerate(self.config.get('windows')):
+            win = Window(
+                self.config.get('windows.{}.name'.format(win_num)),
+                self.tmux,
+                self.config,
+                win_num,
+                self.name
+            )
+            self.windows[win_num] = win
+            win.create()
+        self._attach_to_session()
+
+    def _attach_to_session(self):
+        _execute("{} {} {}".format(self.tmux, '-2 attach-session -t', self.name), capture=True)
+
+
 class Window(object):
 
     LAYOUTS = {
@@ -11,8 +39,9 @@ class Window(object):
         ]
     }
 
-    def __init__(self, name, tmux, config, win_num):
+    def __init__(self, name, tmux, config, win_num, session_name):
         self.name = name
+        self.session_name = session_name
         self.tmux = tmux
         self.config = config
         self.panes_objs = {}
@@ -21,9 +50,10 @@ class Window(object):
         self.panes = self.config.get('windows.{}.panes'.format(self.win_num))
 
     def create(self):
-        _execute("{} {} {}".format(self.tmux, 'new-session -d -s', self.name))
+        if self.win_num > 0:
+            _execute("{} {}".format(self.tmux, 'new-window'))
+            _execute("{} {} '{}'".format(self.tmux, 'rename-window', self.name))
         self.create_panes()
-        _execute("{} {} {}".format(self.tmux, '-2 attach-session -t', self.name), capture=True)
 
     def create_panes(self):
         for pane_num, pane_data in enumerate(self.panes):
@@ -64,6 +94,9 @@ class Pane(object):
         _execute(cmd)
 
     def send_keys(self, pane_cmd):
+        if isinstance(pane_cmd, list):
+            pane_cmd = ' && '.join(pane_cmd)
+
         cmd = '{} send-keys -t {} "{}" "C-m"'.format(
             self.tmux,
             self.pane_number,
@@ -82,7 +115,6 @@ class TmuxSessionBuilder(object):
         """
         self.tmux = _execute('which tmux', capture=True)
         self.config = config
-        self.windows = {}
 
     def build(self):
         if not self.config:
@@ -99,16 +131,9 @@ class TmuxSessionBuilder(object):
         else:
             config = kaptan.Kaptan()
             config.import_config(self.config)
-
-            for win_num, window in enumerate(config.get('windows')):
-                win = Window(
-                    window.get('session_name'),
-                    self.tmux,
-                    config,
-                    win_num
-                )
-                self.windows[win_num] = win
-                win.create()
+            session_name = config.get('session_name')
+            session = Session(session_name, config, self.tmux)
+            session.create()
 
 def _execute(cmd, capture=False):
     ret = local(cmd, capture=capture)

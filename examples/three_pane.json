@@ -1,6 +1,7 @@
 {
     "windows": [
     {
+        "name": "LocalProjects",
         "panes": [
             "htop",
             "ls -ltr",
@@ -12,8 +13,31 @@
         "layout": {
             "name": "main-horizontal",
             "main-pane-height": 45
-    },
-    "session_name": "ThreePane"
     }
-    ]
+    },
+    {
+        "name": "Remote Machines",
+        "panes": [
+            "netstat",
+            [
+                "dtweb", 
+                ". bin/activate",
+                "python manage.py runserver 0.0.0.0:6001 --settings=dtservices.settings"
+                    ],
+            [
+                "dtweb", 
+                ". bin/activate",
+                "python manage.py runserver 0.0.0.0:8000 --settings=dtweb.settings.local_settings"
+                    ]
+                ],
+        "pre_shell_commands": [
+            "pytmux"
+            ],
+        "layout": {
+            "name": "main-horizontal",
+            "main-pane-height": 45
+    }
+    }
+],
+    "session_name": "ThreePane"
 }
