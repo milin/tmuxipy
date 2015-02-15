@@ -11,7 +11,7 @@
             ],
         "layout": {
             "name": "main-horizontal",
-            "main-pane-height": 55
+            "main-pane-height": 45
     },
     "session_name": "ThreePane"
     }

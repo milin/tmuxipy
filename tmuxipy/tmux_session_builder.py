@@ -27,17 +27,21 @@ class Window(object):
 
     def create_panes(self):
         for pane_num, pane_data in enumerate(self.panes):
+            try:
+                layout_cmd =  self.LAYOUTS[self.layout.get('name')][pane_num].format(pane_num)
+            except IndexError:
+                layout_cmd = None
+            tpane = Pane(
+                pane_num,
+                self.tmux,
+                self.win_num,
+                self.config,
+                layout_cmd
+            )
             if pane_num < len(self.panes) - 1:
-                tpane = Pane(
-                    pane_num,
-                    self.tmux,
-                    self.win_num,
-                    self.config,
-                    self.LAYOUTS[self.layout.get('name')][pane_num].format(pane_num)
-                )
                 tpane.create()
-                tpane.send_keys(pane_data)
-                self.panes_objs[pane_num] = tpane
+            tpane.send_keys(pane_data)
+            self.panes_objs[pane_num] = tpane
 
         if self.layout.get('name') == 'main-horizontal':
             self.panes_objs[0].resize(self.layout.get('main-pane-height'))
