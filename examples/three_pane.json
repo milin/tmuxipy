@@ -1,0 +1,19 @@
+{
+    "windows": [
+    {
+        "panes": [
+            "htop",
+            "ls -ltr",
+            "ifconfig"
+                ],
+        "pre_shell_commands": [
+            "pytmux"
+            ],
+        "layout": {
+            "name": "main-horizontal",
+            "main-pane-height": 55
+    },
+    "session_name": "ThreePane"
+    }
+    ]
+}
