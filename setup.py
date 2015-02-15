@@ -7,6 +7,10 @@ try:
 except ImportError:
     from distutils.core import setup
 
+def read(fname):
+    return (open(os.path.join(os.path.dirname(__file__), fname), 'rb')
+            .read().decode('utf-8'))
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
@@ -14,8 +18,8 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read().replace('.. :changelog:', '')
 
-requirements = [
-    # TODO: put package requirements here
+requirements = read('requirements.txt').splitlines() + [
+    'setuptools',
 ]
 
 test_requirements = [
@@ -24,7 +28,7 @@ test_requirements = [
 
 setup(
     name='tmuxipy',
-    version='0.1.0',
+    version='0.1.1',
     description="Manage Tmux sessions legitly",
     long_description=readme + '\n\n' + history,
     author="Milind Shakya",
