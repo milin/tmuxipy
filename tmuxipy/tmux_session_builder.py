@@ -108,8 +108,6 @@ class Pane(object):
 
 
 class TmuxSessionBuilder(object):
-    """
-    """
 
     def __init__(self, config=None, server=None):
         """
@@ -133,7 +131,7 @@ class TmuxSessionBuilder(object):
         else:
             config = kaptan.Kaptan()
             config.import_config(self.config)
-            session_name = config.get('session_name')
+            session_name = config.get('session_name', '')
             session = Session(session_name, config, self.tmux)
             session.create()
 
