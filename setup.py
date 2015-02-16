@@ -9,7 +9,6 @@ except ImportError:
 
 with open('requirements.txt') as f:
     install_reqs = [line for line in f.read().split('\n') if line]
-    tests_reqs = []
 
 with open('test_requirements.txt') as f:
     test_reqs = [line for line in f.read().split('\n') if line]
