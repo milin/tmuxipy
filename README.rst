@@ -24,7 +24,12 @@ Features
 * Supports only Json config currently.
 
 Usage
+-----
+
+* https://github.com/milin/tmuxipy/blob/master/examples/three_pane.json
 
 -----
 
-* tmuxipy -c <path_to_your_config.json>
+* `tmuxipy -c <path_to_your_config.json>` or just `tmuxipy`
+
+Sample Config
