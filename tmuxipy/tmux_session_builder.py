@@ -1,6 +1,6 @@
-from fabric.api import local
 import kaptan
 
+from utils import _execute
 
 class Session(object):
 
@@ -134,7 +134,3 @@ class TmuxSessionBuilder(object):
             session_name = config.get('session_name', '')
             session = Session(session_name, config, self.tmux)
             session.create()
-
-def _execute(cmd, capture=False):
-    ret = local(cmd, capture=capture)
-    return ret

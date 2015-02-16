@@ -25,8 +25,3 @@ class TestTmuxSessionBuilder(unittest.TestCase):
         tmux_session_builder.build()
         self.assertTrue(mock_kaptan_import_config.called)
         self.assertTrue(mock_session_create.called)
-
-
-
-
-
