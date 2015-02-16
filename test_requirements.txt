@@ -1,0 +1,3 @@
+nosetests
+pytest
+mock=1.0.1

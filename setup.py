@@ -11,6 +11,9 @@ with open('requirements.txt') as f:
     install_reqs = [line for line in f.read().split('\n') if line]
     tests_reqs = []
 
+with open('test_requirements.txt') as f:
+    test_reqs = [line for line in f.read().split('\n') if line]
+
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
@@ -19,9 +22,7 @@ with open('HISTORY.rst') as history_file:
 
 requirements = install_reqs
 
-test_requirements = [
-    # TODO: put package test requirements here
-]
+test_requirements = test_reqs
 
 setup(
     name='tmuxipy',
