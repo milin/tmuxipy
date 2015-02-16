@@ -2,7 +2,6 @@ from fabric.api import local
 import kaptan
 
 
-
 class Session(object):
 
     def __init__(self, name, config, tmux):
@@ -95,8 +94,11 @@ class Pane(object):
 
     def send_keys(self, pane_cmd):
         if isinstance(pane_cmd, list):
-            pane_cmd = ' && '.join(pane_cmd)
+            [self._send_keys(cmd) for cmd in pane_cmd]
+        else:
+            self._send_keys(pane_cmd)
 
+    def _send_keys(self, pane_cmd):
         cmd = '{} send-keys -t {} "{}" "C-m"'.format(
             self.tmux,
             self.pane_number,
@@ -138,4 +140,3 @@ class TmuxSessionBuilder(object):
 def _execute(cmd, capture=False):
     ret = local(cmd, capture=capture)
     return ret
-
