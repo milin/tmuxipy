@@ -20,4 +20,11 @@ Manage Tmux sessions legitly
 Features
 --------
 
-* TODO
+* Setup simple and complex tmux configurations for your projects.
+* Supports only Json config currently.
+
+Usage
+
+-----
+
+* tmuxipy -c <path_to_your_config.json>
