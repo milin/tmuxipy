@@ -17,6 +17,11 @@ Manage Tmux sessions legitly
 * Free software: BSD license
 * Documentation: https://tmuxipy.readthedocs.org.
 
+
+Installation
+------------
+* pip install tmuxipy
+
 Features
 --------
 
