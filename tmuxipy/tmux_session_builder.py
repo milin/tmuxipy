@@ -7,10 +7,9 @@ class Session(object):
 
     def __init__(self, name, config, tmux):
         self.name = name
-        self.config =config
+        self.config = config
         self.tmux = tmux
         self.windows = {}
-        self.pre_commands = self.config.get('pre')
 
     def create(self):
         self._execute_pre_commands()
@@ -35,7 +34,8 @@ class Session(object):
         """
         Run before everything
         """
-        map(_execute, self.pre_commands)
+        pre_cmds = self.config.get('pre')
+        map(_execute, pre_cmds)
 
 
 class Window(object):
