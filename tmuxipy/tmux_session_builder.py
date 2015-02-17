@@ -2,11 +2,12 @@ import kaptan
 
 from utils import _execute
 
+
 class Session(object):
 
     def __init__(self, name, config, tmux):
         self.name = name
-        self.config = config
+        self.config =config
         self.tmux = tmux
         self.windows = {}
 
@@ -47,10 +48,14 @@ class Window(object):
         self.win_num = win_num
         self.layout = self.config.get('windows.{}.layout'.format(win_num))
         self.panes = self.config.get('windows.{}.panes'.format(self.win_num))
+        self.pre_shell_cmds = self.config.get(
+            'windows.{}.pre_shell_commands'.format(self.win_num)
+        )
 
     def create(self):
         if self.win_num > 0:
             _execute("{} {}".format(self.tmux, 'new-window'))
+            self._execute_pre_shell_cmds()
             _execute("{} {} '{}'".format(self.tmux, 'rename-window', self.name))
         self.create_panes()
 
@@ -74,6 +79,10 @@ class Window(object):
 
         if self.layout.get('name') == 'main-horizontal':
             self.panes_objs[0].resize(self.layout.get('main-pane-height'))
+
+    def _execute_pre_shell_cmds(self):
+        for cmd in self.pre_shell_cmds:
+            _execute("{} send-keys -t 0 {} 'C-m'".format(self.tmux, cmd))
 
 
 class Pane(object):
@@ -118,7 +127,7 @@ class TmuxSessionBuilder(object):
 
     def build(self):
         if not self.config:
-            # Default Configuration
+            #Default Configuration
             _execute("{} {}".format(self.tmux, 'new-session -d -s test'))
             _execute("{} {}".format(self.tmux, 'select-window -t test:0'))
             _execute("{} {}".format(self.tmux, 'split-window -v'))
