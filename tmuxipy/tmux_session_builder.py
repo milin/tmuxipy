@@ -10,8 +10,10 @@ class Session(object):
         self.config =config
         self.tmux = tmux
         self.windows = {}
+        self.pre_commands = self.config.get('pre')
 
     def create(self):
+        self._execute_pre_commands()
         for win_num, window in enumerate(self.config.get('windows')):
             win = Window(
                 self.config.get('windows.{}.name'.format(win_num)),
@@ -25,7 +27,15 @@ class Session(object):
         self._attach_to_session()
 
     def _attach_to_session(self):
-        _execute("{} {} {}".format(self.tmux, '-2 attach-session -t', self.name), capture=True)
+        _execute("{} {} {}".format(
+            self.tmux, '-2 attach-session -t', self.name),
+            capture=True
+        )
+    def _execute_pre_commands(self):
+        """
+        Run before everything
+        """
+        map(_execute, self.pre_commands)
 
 
 class Window(object):
@@ -46,8 +56,8 @@ class Window(object):
         self.win_num = win_num
         self.layout = self.config.get('windows.{}.layout'.format(win_num))
         self.panes = self.config.get('windows.{}.panes'.format(self.win_num))
-        self.pre_shell_cmds = self.config.get(
-            'windows.{}.pre_shell_commands'.format(self.win_num)
+        self.pre_window_cmds = self.config.get(
+            'windows.{}.pre_window_commands'.format(self.win_num)
         )
 
     def create(self):
@@ -60,7 +70,7 @@ class Window(object):
         else:
             _execute("{} {}".format(self.tmux, 'new-window'))
             _execute("{} {} '{}'".format(self.tmux, 'rename-window', self.name))
-        self._execute_pre_shell_cmds()
+        self._execute_pre_window_cmds()
         self.create_panes()
 
     def create_panes(self):
@@ -84,8 +94,12 @@ class Window(object):
         if self.layout.get('name') == 'main-horizontal':
             self.panes_objs[0].resize(self.layout.get('main-pane-height'))
 
-    def _execute_pre_shell_cmds(self):
-        for cmd in self.pre_shell_cmds:
+    def _execute_pre_window_cmds(self):
+        """
+        Runs any pre commands and is used before panes are created in the
+        windows.
+        """
+        for cmd in self.pre_window_cmds:
             _execute("{} send-keys -t 0 {} 'C-m'".format(self.tmux, cmd))
 
 
