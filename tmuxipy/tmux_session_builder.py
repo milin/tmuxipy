@@ -12,8 +12,6 @@ class Session(object):
         self.windows = {}
 
     def create(self):
-        _execute("{} {} {}".format(self.tmux, 'new-session -d -s', self.name))
-        _execute("{} {} '{}'".format(self.tmux, 'rename-window', self.config.get('windows.0.name')))
         for win_num, window in enumerate(self.config.get('windows')):
             win = Window(
                 self.config.get('windows.{}.name'.format(win_num)),
@@ -53,10 +51,16 @@ class Window(object):
         )
 
     def create(self):
-        if self.win_num > 0:
+        if self.win_num == 0:
+            _execute("{} {} {}".format(self.tmux, 'new-session -d -s', self.session_name))
+            _execute("{} {} '{}'".format(
+                self.tmux, 'rename-window',
+                self.config.get('windows.0.name'))
+            )
+        else:
             _execute("{} {}".format(self.tmux, 'new-window'))
-            self._execute_pre_shell_cmds()
             _execute("{} {} '{}'".format(self.tmux, 'rename-window', self.name))
+        self._execute_pre_shell_cmds()
         self.create_panes()
 
     def create_panes(self):
