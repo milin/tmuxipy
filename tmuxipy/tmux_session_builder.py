@@ -1,6 +1,12 @@
+import sys
+
+from blessings import Terminal
+
 import kaptan
 
 from utils import _execute
+
+t = Terminal()
 
 
 class Session(object):
@@ -12,6 +18,7 @@ class Session(object):
         self.windows = {}
 
     def create(self):
+        self._sanity_check()
         self._execute_pre_commands()
         for win_num, window in enumerate(self.config.get('windows')):
             win = Window(
@@ -36,6 +43,16 @@ class Session(object):
         """
         pre_cmds = self.config.get('pre')
         map(_execute, pre_cmds)
+
+    def _sanity_check(self):
+        """
+        Currently Checks to see if a tmux session with the current session
+        name already exists.
+        """
+        stdout = _execute('tmux ls', capture=True)
+        if self.name in stdout:
+            print t.bold_red('Session name: {} already exists'.format(self.name))
+            sys.exit()
 
 
 class Window(object):
