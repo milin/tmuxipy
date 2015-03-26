@@ -1,4 +1,8 @@
 {
+    "pre": [
+        "ls"
+        ],
+
     "windows": [
     {
         "name": "LocalProjects",

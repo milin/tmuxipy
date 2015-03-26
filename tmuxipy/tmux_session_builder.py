@@ -73,8 +73,8 @@ class Window(object):
         self.win_num = win_num
         self.layout = self.config.get('windows.{}.layout'.format(win_num))
         self.panes = self.config.get('windows.{}.panes'.format(self.win_num))
-        self.pre_window_cmds = self.config.get(
-            'windows.{}.pre_window_commands'.format(self.win_num)
+        self.pre_shell_cmds = self.config.get(
+            'windows.{}.pre_shell_commands'.format(self.win_num)
         )
 
     def create(self):
@@ -87,7 +87,7 @@ class Window(object):
         else:
             _execute("{} {}".format(self.tmux, 'new-window'))
             _execute("{} {} '{}'".format(self.tmux, 'rename-window', self.name))
-        self._execute_pre_window_cmds()
+        self._execute_pre_shell_cmds()
         self.create_panes()
 
     def create_panes(self):
@@ -111,12 +111,12 @@ class Window(object):
         if self.layout.get('name') == 'main-horizontal':
             self.panes_objs[0].resize(self.layout.get('main-pane-height'))
 
-    def _execute_pre_window_cmds(self):
+    def _execute_pre_shell_cmds(self):
         """
         Runs any pre commands and is used before panes are created in the
         windows.
         """
-        for cmd in self.pre_window_cmds:
+        for cmd in self.pre_shell_cmds:
             _execute("{} send-keys -t 0 {} 'C-m'".format(self.tmux, cmd))
 
 
