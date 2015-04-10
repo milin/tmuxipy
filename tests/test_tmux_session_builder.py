@@ -53,19 +53,12 @@ class TestSession(unittest.TestCase):
         self.assertEqual({}, session_a.windows)
 
     @mock.patch(TESTING_MODULE + '.Window')
-    @mock.patch.object(Session, '_sanity_check')
     @mock.patch.object(Session, '_execute_pre_commands')
     @mock.patch.object(Session, '_attach_to_session')
     def test_create(self,
                     mock__attach_to_session,
                     mock__execute_pre_commands,
-                    mock__sanity_check,
                     mock_window):
         self.session.create()
-        mock__sanity_check.assert_called_once_with()
         mock__execute_pre_commands.assert_called_once_with()
         mock__attach_to_session.assert_called_once_with()
-
-
-
-

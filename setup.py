@@ -25,7 +25,7 @@ test_requirements = test_reqs
 
 setup(
     name='tmuxipy',
-    version='0.1.9',
+    version='0.1.10',
     description="Manage Tmux sessions legitly",
     long_description=readme + '\n\n' + history,
     author="Milind Shakya",
