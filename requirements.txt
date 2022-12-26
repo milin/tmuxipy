@@ -1,4 +1,4 @@
-wheel==0.23.0
+wheel==0.38.1
 fabric==1.10.1
 simplejson==3.6.5
 kaptan==0.5.8
